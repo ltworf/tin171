@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>715</width>
+    <width>684</width>
     <height>569</height>
    </rect>
   </property>
@@ -14,165 +14,200 @@
    <string>Chinese Checkers</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <layout class="QVBoxLayout" name="verticalLayout_5">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Hostname</string>
-          </property>
-          <property name="buddy">
-           <cstring>txtHostname</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="txtHostname">
-          <property name="text">
-           <string>localhost</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Port</string>
-          </property>
-          <property name="buddy">
-           <cstring>spinPort</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="spinPort">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>65536</number>
-          </property>
-          <property name="value">
-           <number>8000</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QPushButton" name="cmdConnect">
-        <property name="text">
-         <string>Connect</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="cmdDisconnect">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Disconnect</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QSplitter" name="splitter_2">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
       </property>
-      <widget class="QGroupBox" name="boardFrame">
-       <property name="title">
-        <string>Board</string>
-       </property>
-       <layout class="QHBoxLayout" name="boardLayout"/>
-      </widget>
-      <widget class="QSplitter" name="splitter">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <widget class="QGroupBox" name="groupBox_2">
-        <property name="title">
-         <string>Players</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QListWidget" name="lstPlayers"/>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QGroupBox" name="groupBox_3">
-        <property name="title">
-         <string>Games</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Game setup</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Hostname</string>
+              </property>
+              <property name="buddy">
+               <cstring>txtHostname</cstring>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="txtHostname">
+              <property name="text">
+               <string>localhost</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>Port</string>
+              </property>
+              <property name="buddy">
+               <cstring>spinPort</cstring>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="spinPort">
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>65536</number>
+              </property>
+              <property name="value">
+               <number>8000</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cmdConnect">
+            <property name="text">
+             <string>Connect</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cmdServer">
+            <property name="text">
+             <string>Server</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="cmdDisconnect">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Disconnect</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="title">
+           <string>Games</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
-            <widget class="QListWidget" name="lstGames"/>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item>
+              <widget class="QListWidget" name="lstGames"/>
+             </item>
+             <item>
+              <widget class="QPushButton" name="refreshGames">
+               <property name="text">
+                <string>←</string>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
-            <widget class="QPushButton" name="refreshGames">
-             <property name="text">
-              <string>←</string>
+            <widget class="QPushButton" name="cmdSpectate">
+             <property name="enabled">
+              <bool>false</bool>
              </property>
-             <property name="flat">
-              <bool>true</bool>
+             <property name="text">
+              <string>Spectate</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdHost">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Host</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdJoin">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Join</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdStart">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Start</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="cmdAddBot">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Add bot</string>
              </property>
             </widget>
            </item>
           </layout>
-         </item>
-         <item>
-          <widget class="QPushButton" name="cmdSpectate">
-           <property name="enabled">
-            <bool>false</bool>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Game board</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QSplitter" name="splitter">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <widget class="QGroupBox" name="boardFrame">
+           <property name="title">
+            <string>Board</string>
            </property>
-           <property name="text">
-            <string>Spectate</string>
-           </property>
+           <layout class="QHBoxLayout" name="boardLayout"/>
           </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="cmdHost">
-           <property name="enabled">
-            <bool>false</bool>
+          <widget class="QGroupBox" name="groupBox_2">
+           <property name="title">
+            <string>Players</string>
            </property>
-           <property name="text">
-            <string>Host</string>
-           </property>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <widget class="QListWidget" name="lstPlayers"/>
+            </item>
+           </layout>
           </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="cmdJoin">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>Join</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="cmdStart">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>Start</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -183,7 +218,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>715</width>
+     <width>684</width>
      <height>20</height>
     </rect>
    </property>
@@ -207,22 +242,6 @@
  <resources/>
  <connections>
   <connection>
-   <sender>cmdConnect</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>connect_server()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>609</x>
-     <y>47</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>558</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionQuit</sender>
    <signal>activated()</signal>
    <receiver>MainWindow</receiver>
@@ -235,134 +254,6 @@
     <hint type="destinationlabel">
      <x>279</x>
      <y>193</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdSpectate</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>spectate()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>556</x>
-     <y>476</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>714</x>
-     <y>34</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdJoin</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>join()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>649</x>
-     <y>530</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>713</x>
-     <y>61</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdHost</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>host()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>540</x>
-     <y>503</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>715</x>
-     <y>99</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdStart</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>start()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>567</x>
-     <y>557</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>714</x>
-     <y>140</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cmdDisconnect</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>socket_disconnected()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>633</x>
-     <y>36</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>714</x>
-     <y>203</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>refreshGames</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>get_games()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>691</x>
-     <y>369</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>713</x>
-     <y>326</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>txtHostname</sender>
-   <signal>returnPressed()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>connect_server()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>168</x>
-     <y>42</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>184</x>
-     <y>50</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>spinPort</sender>
-   <signal>editingFinished()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>connect_server()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>485</x>
-     <y>44</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>493</x>
-     <y>51</y>
     </hint>
    </hints>
   </connection>

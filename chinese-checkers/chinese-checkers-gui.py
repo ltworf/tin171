@@ -19,6 +19,7 @@
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
 import sys
+import os
 
 from PyQt4 import QtCore, QtGui
 from PyQt4 import QtNetwork
@@ -325,6 +326,9 @@ class GameUI(QtGui.QMainWindow):
             self.ui.lstPlayers.addItem(item)
 
 if __name__ == "__main__":
+    #makes yappy happy, going to a writable directory
+    os.chdir(os.getenv('TMPDIR','/tmp'))
+
     app = QtGui.QApplication(sys.argv)
     
     MainWindow = GameUI()

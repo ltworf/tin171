@@ -1,0 +1,54 @@
+Source: chinese-checkers
+Section: games
+Priority: optional
+Maintainer: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>
+Standards-Version: 3.9.2
+Homepage: https://github.com/ltworf/tin171
+Build-Depends: debhelper (>= 7.0.50~), python, python-support
+
+Package: python-chinese-checkers-board
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}. python-qt4
+Build-Depends: pyqt4-dev-tools
+Description: PyQT widget to draw a chinese checkers board.
+ Provides a QWidget subclass implemented in Python to
+ make a chinese checkers game.
+
+Package: chinese-checkers-client
+Architecture: all
+Depends:  ${misc:Depends}, ${python:Depends}, python-qt4, python-chinese-checkers-board, chinese-checkers-ai
+Recommends: chinese-checkers-server
+Description: Multiplayer implementation of the chinese checkers game.
+ Chinese checkers is a multiplayer board game, that can be played by
+ 2,3,4,6 players.
+ .
+ This package provides a GUI to play the game.
+
+Package: chinese-checkers-ai
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, python-yappy
+Description: Multiplayer implementation of the chinese checkers game.
+ Chinese checkers is a multiplayer board game, that can be played by
+ 2,3,4,6 players.
+ .
+ This package provides the artificial intelligence for the computer
+ players.
+
+Package: chinese-checkers-server
+Architecture: all
+Depends: erlang-base
+Description: Multiplayer implementation of the chinese checkers game.
+ Chinese checkers is a multiplayer board game, that can be played by
+ 2,3,4,6 players.
+ .
+ This package provides the server, to be able to host games.
+
+Package: chinese-checkers
+Architecture: all
+Depends: chinese-checkers-server, chinese-checkers-ai, chinese-checkers-client, python-chinese-checkers-board
+Description: Multiplayer implementation of the chinese checkers game.
+ Chinese checkers is a multiplayer board game, that can be played by
+ 2,3,4,6 players.
+ .
+ This virtual package installs all the components of the game.
+

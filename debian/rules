@@ -3,18 +3,13 @@
 %:
 	dh $@
 
-clean:
-	rm -rf build *.egg-info
-	dh $@
-
-
-override_dh_auto_clean:
-override_dh_auto_build:
 override_dh_auto_install:
-	python setup.py install --root=$(CURDIR)/debian/chinese-checkers-client
+	python setup.py install --root=debian/chinese-checkers-client --install-layout=deb --install-lib=/usr/share/chinese-checkers-client --install-scripts=/usr/games
+	chmod a+x debian/chinese-checkers-client/usr/share/chinese-checkers-client/chinese-checkers/chinese-checkers-gui.py
+	touch debian/chinese-checkers-client/usr/share/chinese-checkers-client/chinese-checkers/tablereg
+	chmod a+rw debian/chinese-checkers-client/usr/share/chinese-checkers-client/chinese-checkers/tablereg
 
-#override_dh_install:
-#        install -D relational_gui.py debian/relational/usr/bin/relational
-#        install -D relational_gui.py debian/relational-cli/usr/bin/relational-cli
-#        dh_install
+
+override_dh_auto_build:
+	echo "a"
 

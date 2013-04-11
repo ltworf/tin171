@@ -1,6 +1,6 @@
 *.pyc
 tablereg
-chinese/ebin/
+server/ebin/
 *~
 *.pdf
 gui_client/gui.py

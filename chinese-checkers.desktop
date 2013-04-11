@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Chinese Checkers
+GenericName=Chinese Checkers
+GenericName[it]=Dama Cinese
+Comment=Play Chinese Checkers
+Comment[it]=Gioca alla Dama Cinese
+Exec=chinese-checkers-gui
+Icon=chinese_board.svg
+Terminal=0
+Type=Application
+Categories=Games;

@@ -51,9 +51,11 @@ def gen_board(board):
 
 class BoardWidget(QtSvg.QSvgWidget):
     
-    clicked = QtCore.pyqtSignal(int, name='clicked')
     '''This widgets shows a chinese checkers board.
     The board is shown after the setBoard method has been called'''
+
+    clicked = QtCore.pyqtSignal(int, name='clicked')
+
     def __init__(self):
         super(BoardWidget, self).__init__()
         svgPolicy = QtGui.QSizePolicy()

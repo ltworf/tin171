@@ -79,7 +79,7 @@ class GameUI(QtGui.QMainWindow):
         QtCore.QObject.connect(self.socket,QtCore.SIGNAL("readyRead()"), self.socket_event)
         QtCore.QObject.connect(self.socket,QtCore.SIGNAL("connected()"), self.socket_connected)
         QtCore.QObject.connect(self.socket,QtCore.SIGNAL("disconnected()"), self.socket_disconnected)
-    def close(self):
+    def closeEvent(self,event):
         terminate_children(self.child)
         sys.exit(0)
         

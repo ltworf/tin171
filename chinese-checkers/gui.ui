@@ -248,8 +248,8 @@
    <slot>connect_server()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>609</x>
-     <y>47</y>
+     <x>291</x>
+     <y>75</y>
     </hint>
     <hint type="destinationlabel">
      <x>558</x>
@@ -280,8 +280,8 @@
    <slot>spectate()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>556</x>
-     <y>476</y>
+     <x>456</x>
+     <y>380</y>
     </hint>
     <hint type="destinationlabel">
      <x>714</x>
@@ -296,8 +296,8 @@
    <slot>join()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>649</x>
-     <y>530</y>
+     <x>456</x>
+     <y>434</y>
     </hint>
     <hint type="destinationlabel">
      <x>713</x>
@@ -312,8 +312,8 @@
    <slot>host()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>540</x>
-     <y>503</y>
+     <x>456</x>
+     <y>407</y>
     </hint>
     <hint type="destinationlabel">
      <x>715</x>
@@ -328,8 +328,8 @@
    <slot>start()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>567</x>
-     <y>557</y>
+     <x>456</x>
+     <y>461</y>
     </hint>
     <hint type="destinationlabel">
      <x>714</x>
@@ -344,8 +344,8 @@
    <slot>socket_disconnected()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>633</x>
-     <y>36</y>
+     <x>462</x>
+     <y>75</y>
     </hint>
     <hint type="destinationlabel">
      <x>714</x>
@@ -360,8 +360,8 @@
    <slot>get_games()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>691</x>
-     <y>369</y>
+     <x>455</x>
+     <y>243</y>
     </hint>
     <hint type="destinationlabel">
      <x>713</x>
@@ -376,8 +376,8 @@
    <slot>connect_server()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>168</x>
-     <y>42</y>
+     <x>108</x>
+     <y>75</y>
     </hint>
     <hint type="destinationlabel">
      <x>184</x>
@@ -392,12 +392,28 @@
    <slot>connect_server()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>485</x>
-     <y>44</y>
+     <x>208</x>
+     <y>75</y>
     </hint>
     <hint type="destinationlabel">
      <x>493</x>
      <y>51</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdAddBot</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>add_bot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>104</x>
+     <y>473</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>170</x>
+     <y>507</y>
     </hint>
    </hints>
   </connection>
@@ -411,5 +427,6 @@
   <slot>start()</slot>
   <slot>get_games()</slot>
   <slot>connect_server()</slot>
+  <slot>add_bot()</slot>
  </slots>
 </ui>

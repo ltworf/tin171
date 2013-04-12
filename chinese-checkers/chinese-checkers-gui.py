@@ -20,14 +20,18 @@
 
 import sys
 import os
+import subprocess
 
 from PyQt4 import QtCore, QtGui
 from PyQt4 import QtNetwork
+from PyQt4.QtGui import QInputDialog
 
 from BoardWidget import BoardWidget
 import gui
 import protocol
 from bot import protocol as parser
+from bot import bot
+
 
 
 class StateEnum:
@@ -43,7 +47,12 @@ class StateEnum:
     MOVE_WAIT = 9
     SPECTATE_WAIT = 10
     SPECTATING = 11
-    
+
+def terminate_children(l):
+    for i in l:
+        i.terminate()
+        i.wait()
+        
 
 class GameUI(QtGui.QMainWindow):
     
@@ -61,6 +70,8 @@ class GameUI(QtGui.QMainWindow):
         self.player_id = -1
         self.my_turn = False
         self.steps=[]
+
+        self.child = []
         
         
         #connection to the server
@@ -68,6 +79,9 @@ class GameUI(QtGui.QMainWindow):
         QtCore.QObject.connect(self.socket,QtCore.SIGNAL("readyRead()"), self.socket_event)
         QtCore.QObject.connect(self.socket,QtCore.SIGNAL("connected()"), self.socket_connected)
         QtCore.QObject.connect(self.socket,QtCore.SIGNAL("disconnected()"), self.socket_disconnected)
+    def close(self):
+        terminate_children(self.child)
+        sys.exit(0)
         
     def connect_server(self):
         '''slot connected to the event of button pressed'''
@@ -114,16 +128,23 @@ class GameUI(QtGui.QMainWindow):
                 self.ui.cmdHost.setEnabled(False)
                 if self.state == StateEnum.JOIN_OK_WAIT:
                     self.ui.cmdStart.setEnabled(False)
+                else:
+                    self.ui.cmdAddBot.setEnabled(True)
                 self.state = StateEnum.WAITING_PLAYERS
             elif self.state == StateEnum.START_WAIT:
                 self.ui.cmdStart.setEnabled(False)
+                self.ui.cmdAddBot.setEnabled(False)
+                self.ui.tabWidget.setCurrentIndex(1)
                 self.state = StateEnum.GAME_STARTED
+                
             elif self.state == StateEnum.SPECTATE_WAIT:
-                self.state =StateEnum.SPECTATING
+                self.state = StateEnum.SPECTATING
                 self.ui.cmdJoin.setEnabled(False)
                 self.ui.cmdSpectate.setEnabled(False)
                 self.ui.cmdStart.setEnabled(False)
                 self.ui.cmdHost.setEnabled(False)
+                self.ui.tabWidget.setCurrentIndex(1)
+                
         elif msg[0]=='error':
             if self.state == StateEnum.MOVE_WAIT:
                 self.state = -1
@@ -220,6 +241,7 @@ class GameUI(QtGui.QMainWindow):
         self.ui.txtHostname.setEnabled(False)
         self.ui.spinPort.setEnabled(False)
         self.ui.cmdConnect.setEnabled(False)
+        self.ui.cmdServer.setEnabled(False)
         self.ui.cmdDisconnect.setEnabled(True)
         pass
     
@@ -230,6 +252,7 @@ class GameUI(QtGui.QMainWindow):
         self.ui.txtHostname.setEnabled(True)
         self.ui.spinPort.setEnabled(True)
         self.ui.cmdConnect.setEnabled(True)
+        self.ui.cmdServer.setEnabled(True)
         
         self.ui.cmdJoin.setEnabled(False)
         self.ui.cmdSpectate.setEnabled(False)
@@ -241,6 +264,7 @@ class GameUI(QtGui.QMainWindow):
         palette=self.ui.lstGames.palette()
         #palette.setColor(9,None)
         self.ui.lstPlayers.setPalette(palette)
+        terminate_children(self.child)
         
     def board_click(self,i):
         print i
@@ -282,7 +306,8 @@ class GameUI(QtGui.QMainWindow):
                     QtGui.QLineEdit.Normal,"")
         if not gname[1]:
             return
-        message= protocol.host_game_message(str(gname[0]))
+        message = protocol.host_game_message(str(gname[0]))
+        self.gamename = str(gname[0])
         self.write(message)
         self.state = StateEnum.HOST_OK_WAIT
         self.get_games()
@@ -296,7 +321,37 @@ class GameUI(QtGui.QMainWindow):
         print "---> %s" % message
         #TODO return to initial state if connection fails
         self.socket.write(message)
+    def add_bot(self):
+        
+        bots = ''
+        personalities = bot.get_personalities()
+        for i in personalities:
+            bots+='%d - %s\n' % (i[0],i[1])
+        
+        (index,okay)=QInputDialog.getText(self,"Select bot","Insert the index of the desired AI:\n"+bots,QtGui.QLineEdit.Normal,"0")
+        if not okay:
+            return
+        try:
+            index = int(index)
+        except:
+            return
+        if index >= len(personalities) or index < 0:
+            return
 
+        hostname = str(self.ui.txtHostname.text())
+        port = self.ui.spinPort.value()
+        print hostname, port
+
+
+        
+        args = ['/usr/games/chinese-checkers-bot',
+                '-s', hostname,
+                '-p', str(port),
+                '-g', self.gamename,
+                '-b', str(index),
+                ]
+        self.child.append(subprocess.Popen(args))
+        
     def pretty_players(self,l):
         '''Fills the list of players, colorizing it
         l is a list of tuples in the form id,player_name

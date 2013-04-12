@@ -203,16 +203,27 @@ def play(c, player_id, players, make_move):
         elif x[0] == A('won'):
             print "A winner was announced:", x
             return
-
+def get_personalities():
+    '''
+    Returns a list of tuples representing all the available AIs
+    1st item in the tuple is the integer representing the index,
+    and 2nd item is the personality name.
+    
+    '''
+    r=[]
+    out = []
+    for i in personality:
+        r.append(i.func_name)
+    for i in xrange(len(r)):
+        out.append((i,r[i]))
+    return out
 def list_personalities(*stuff):
     '''Prints a list of strings with all the available personalities for the
     bot'''
-    r=[]
-    for i in personality:
-        r.append(i.func_name)
+    
 
-    for i in xrange(len(r)):
-        print '%d\t\t%s' % (i,r[i])
+    for i in get_personalities():
+        print '%d\t\t%s' % (i[0],i[1])
     sys.exit(0)
     return r
 
@@ -240,7 +251,6 @@ def main():
     parser.add_option('-y','--players',help='number of players to in the match before starting the game. Ignored when not hosting a game',
                       type='int',action='store',dest='players',default=2)
     (opts, args) = parser.parse_args()
-
 
     c = protocol.Client(socket.create_connection((opts.server, opts.port)).makefile())
 

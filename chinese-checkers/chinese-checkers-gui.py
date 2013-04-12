@@ -344,13 +344,16 @@ class GameUI(QtGui.QMainWindow):
 
 
         
-        args = ['/usr/games/chinese-checkers-bot',
+        args = ['chinese-checkers-bot',
                 '-s', hostname,
                 '-p', str(port),
                 '-g', self.gamename,
                 '-b', str(index),
                 ]
-        self.child.append(subprocess.Popen(args))
+        try:
+            self.child.append(subprocess.Popen(args))
+        except OSError:
+            QtGui.QMessageBox.warning(self,'Chinese Checkers','Unable to run AI')
         
     def pretty_players(self,l):
         '''Fills the list of players, colorizing it

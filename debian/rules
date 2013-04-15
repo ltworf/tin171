@@ -3,12 +3,13 @@
 %:
 	dh $@
 
+override_dh_auto_build:
+	cd chinese-checkers/;./gen.sh;cd -
+
 override_dh_auto_install:
 	python setup.py install --root=debian/chinese-checkers-client --install-layout=deb --install-lib=/usr/share/chinese-checkers-client --install-scripts=/usr/games
 	chmod a+x debian/chinese-checkers-client/usr/share/chinese-checkers-client/chinese-checkers/chinese-checkers-gui.py
 	chmod a+x debian/chinese-checkers-client/usr/share/chinese-checkers-client/chinese-checkers/bot/bot.py
-	touch debian/chinese-checkers-client/usr/share/chinese-checkers-client/chinese-checkers/tablereg
-	chmod a+rw debian/chinese-checkers-client/usr/share/chinese-checkers-client/chinese-checkers/tablereg
 
 
 override_dh_auto_build:

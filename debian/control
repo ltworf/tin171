@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>
 Standards-Version: 3.9.2
 Homepage: https://github.com/ltworf/tin171
-Build-Depends: debhelper (>= 7.0.50~), python, python-support
+Build-Depends: debhelper (>= 7.0.50~), python, python-support, pyqt4-dev-tools, python-yappy
 
 Package: chinese-checkers-client
 Architecture: all

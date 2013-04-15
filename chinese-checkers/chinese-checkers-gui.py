@@ -58,6 +58,10 @@ class GameUI(QtGui.QMainWindow):
     
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
+
+        
+        
+        
         self.ui = gui.Ui_MainWindow()
         self.ui.setupUi(self)
         self.svg = BoardWidget()
@@ -72,6 +76,8 @@ class GameUI(QtGui.QMainWindow):
         self.steps=[]
 
         self.child = []
+
+        self.load_settings()
         
         
         #connection to the server
@@ -79,6 +85,12 @@ class GameUI(QtGui.QMainWindow):
         QtCore.QObject.connect(self.socket,QtCore.SIGNAL("readyRead()"), self.socket_event)
         QtCore.QObject.connect(self.socket,QtCore.SIGNAL("connected()"), self.socket_connected)
         QtCore.QObject.connect(self.socket,QtCore.SIGNAL("disconnected()"), self.socket_disconnected)
+    def load_settings(self):
+
+        self.settings = QtCore.QSettings()
+        self.ui.txtHostname.setText(self.settings.value('hostname','localhost').toString())
+        self.ui.spinPort.setValue(self.settings.value('port',8000).toInt()[0])
+        
     def closeEvent(self,event):
         terminate_children(self.child)
         sys.exit(0)
@@ -88,6 +100,9 @@ class GameUI(QtGui.QMainWindow):
         
         hostname = self.ui.txtHostname.text()
         port = self.ui.spinPort.value()
+
+        self.settings.setValue('hostname',self.ui.txtHostname.text())
+        self.settings.setValue('port',self.ui.spinPort.value())
         
         if self.socket.state() != QtNetwork.QAbstractSocket.UnconnectedState:
             self.socket.close()
@@ -225,6 +240,7 @@ class GameUI(QtGui.QMainWindow):
             
             self.board = protocol.get_gui_board(msg[2])
             self.svg.setBoard(self.board)
+            self.socket_disconnected()
             
     def get_games(self):
         self.write(protocol.list_games())
@@ -388,6 +404,9 @@ if __name__ == "__main__":
     os.chdir(os.getenv('TMPDIR','/tmp'))
 
     app = QtGui.QApplication(sys.argv)
+
+    app.setOrganizationName('None');
+    app.setApplicationName('chinese-checkers-gui');
     
     MainWindow = GameUI()
     MainWindow.show()

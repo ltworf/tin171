@@ -1,4 +1,11 @@
 *.pyc
+debian/chinese-checkers-server/*
+debian/chinese-checkers/*
+*.tmp
+*.substvars
+*.debhelper
+debian/chinese-checkers-client/*
+*.log
 tablereg
 server/ebin/
 *~

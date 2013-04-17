@@ -22,6 +22,8 @@ import sys
 import os
 import subprocess
 
+import notify2
+
 from PyQt4 import QtCore, QtGui
 from PyQt4 import QtNetwork
 from PyQt4.QtGui import QInputDialog
@@ -59,9 +61,8 @@ class GameUI(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
 
-        
-        
-        
+        notify2.init('Chinese Checkers')
+
         self.ui = gui.Ui_MainWindow()
         self.ui.setupUi(self)
         self.svg = BoardWidget()
@@ -85,12 +86,27 @@ class GameUI(QtGui.QMainWindow):
         QtCore.QObject.connect(self.socket,QtCore.SIGNAL("readyRead()"), self.socket_event)
         QtCore.QObject.connect(self.socket,QtCore.SIGNAL("connected()"), self.socket_connected)
         QtCore.QObject.connect(self.socket,QtCore.SIGNAL("disconnected()"), self.socket_disconnected)
+    def notify(self,message):
+        n = notify2.Notification("Chinese Checkers",
+                         message,
+                         "chinese_board.svg"   # Icon name
+                        )
+        n.set_timeout(500)
+        self.activateWindow()
+        if self.ui.chkNotify.isChecked():
+            n.show()
+
+        
     def load_settings(self):
 
         self.settings = QtCore.QSettings()
         self.ui.txtHostname.setText(self.settings.value('hostname','localhost').toString())
         self.ui.spinPort.setValue(self.settings.value('port',8000).toInt()[0])
-        
+        self.ui.chkNotify.setChecked(self.settings.value('notify',True).toBool())
+    def store_settings(self):
+        self.settings.setValue('hostname',self.ui.txtHostname.text())
+        self.settings.setValue('port',self.ui.spinPort.value())
+        self.settings.setValue('notify',self.ui.chkNotify.isChecked())
     def closeEvent(self,event):
         terminate_children(self.child)
         sys.exit(0)
@@ -101,8 +117,7 @@ class GameUI(QtGui.QMainWindow):
         hostname = self.ui.txtHostname.text()
         port = self.ui.spinPort.value()
 
-        self.settings.setValue('hostname',self.ui.txtHostname.text())
-        self.settings.setValue('port',self.ui.spinPort.value())
+        self.store_settings()
         
         if self.socket.state() != QtNetwork.QAbstractSocket.UnconnectedState:
             self.socket.close()
@@ -202,6 +217,7 @@ class GameUI(QtGui.QMainWindow):
             self.pretty_players(msg[2])
             self.board = protocol.get_gui_board(msg[3])
             self.svg.setBoard(self.board)
+            self.ui.tabWidget.setCurrentIndex(1)
         elif msg[0] == 'your_turn':
             #TODO timeout msg[1]
             self.steps=list()
@@ -210,6 +226,9 @@ class GameUI(QtGui.QMainWindow):
             self.board = protocol.get_gui_board(msg[2])
             self.svg.setBoard(self.board)
             self.prev_board=list(self.board)
+
+            self.notify('Your turn')
+            
         elif msg[0] == 'update':
             
             if self.state == StateEnum.MOVE_WAIT:

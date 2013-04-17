@@ -129,54 +129,107 @@
              </layout>
             </item>
             <item>
-             <widget class="QPushButton" name="cmdSpectate">
-              <property name="enabled">
-               <bool>false</bool>
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <property name="topMargin">
+               <number>0</number>
               </property>
-              <property name="text">
-               <string>Spectate</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="cmdHost">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Host</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="cmdJoin">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Join</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="cmdStart">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Start</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="cmdAddBot">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Add bot</string>
-              </property>
-             </widget>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_5">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="cmdHost">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Host</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="cmdStart">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Start</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="cmdJoin">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Join</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="cmdSpectate">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Spectate</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="cmdAddBot">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Add bot</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Minimum</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_6">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QCheckBox" name="chkNotify">
+                  <property name="text">
+                   <string>Enable notifications</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
@@ -280,8 +333,8 @@
    <slot>spectate()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>456</x>
-     <y>380</y>
+     <x>156</x>
+     <y>459</y>
     </hint>
     <hint type="destinationlabel">
      <x>714</x>
@@ -296,8 +349,8 @@
    <slot>join()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>456</x>
-     <y>434</y>
+     <x>156</x>
+     <y>432</y>
     </hint>
     <hint type="destinationlabel">
      <x>713</x>
@@ -312,8 +365,8 @@
    <slot>host()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>456</x>
-     <y>407</y>
+     <x>156</x>
+     <y>378</y>
     </hint>
     <hint type="destinationlabel">
      <x>715</x>
@@ -328,8 +381,8 @@
    <slot>start()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>456</x>
-     <y>461</y>
+     <x>156</x>
+     <y>405</y>
     </hint>
     <hint type="destinationlabel">
      <x>714</x>
@@ -361,7 +414,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>455</x>
-     <y>243</y>
+     <y>241</y>
     </hint>
     <hint type="destinationlabel">
      <x>713</x>
@@ -417,6 +470,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>chkNotify</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>store_settings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>341</x>
+     <y>415</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>606</x>
+     <y>197</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>connect()</slot>
@@ -428,5 +497,6 @@
   <slot>get_games()</slot>
   <slot>connect_server()</slot>
   <slot>add_bot()</slot>
+  <slot>store_settings()</slot>
  </slots>
 </ui>

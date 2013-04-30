@@ -22,7 +22,10 @@ import sys
 import os
 import subprocess
 
-import notify2
+try:
+    import notify2
+except:
+    pass
 
 from PyQt4 import QtCore, QtGui
 from PyQt4 import QtNetwork
@@ -60,8 +63,7 @@ class GameUI(QtGui.QMainWindow):
     
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
-
-        notify2.init('Chinese Checkers')
+        
 
         self.ui = gui.Ui_MainWindow()
         self.ui.setupUi(self)
@@ -86,14 +88,21 @@ class GameUI(QtGui.QMainWindow):
         QtCore.QObject.connect(self.socket,QtCore.SIGNAL("readyRead()"), self.socket_event)
         QtCore.QObject.connect(self.socket,QtCore.SIGNAL("connected()"), self.socket_connected)
         QtCore.QObject.connect(self.socket,QtCore.SIGNAL("disconnected()"), self.socket_disconnected)
+        
+        try:
+            notify2.init('Chinese Checkers')
+        except:
+            self.ui.chkNotify.setChecked(False)
+            self.ui.chkNotify.setEnabled(False)
+            
     def notify(self,message):
-        n = notify2.Notification("Chinese Checkers",
+        self.activateWindow()
+        if self.ui.chkNotify.isChecked():
+            n = notify2.Notification("Chinese Checkers",
                          message,
                          "chinese_board.svg"   # Icon name
                         )
-        n.set_timeout(500)
-        self.activateWindow()
-        if self.ui.chkNotify.isChecked():
+            n.set_timeout(500)
             n.show()
 
         

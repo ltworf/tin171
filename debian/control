@@ -8,8 +8,8 @@ Build-Depends: debhelper (>= 7.0.50~), python, python-support, pyqt4-dev-tools, 
 
 Package: chinese-checkers-client
 Architecture: all
-Depends:  ${misc:Depends}, ${python:Depends}, python-qt4, python-yappy, python-notify2
-Recommends: chinese-checkers-server
+Depends:  ${misc:Depends}, ${python:Depends}, python-qt4, python-yappy
+Recommends: chinese-checkers-server, python-notify2
 Description: Multiplayer implementation of the chinese checkers game.
  Chinese checkers is a multiplayer board game, that can be played by
  2,3,4,6 players.

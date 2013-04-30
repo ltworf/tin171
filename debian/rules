@@ -11,7 +11,3 @@ override_dh_auto_install:
 	chmod a+x debian/chinese-checkers-client/usr/share/chinese-checkers-client/chinese-checkers/chinese-checkers-gui.py
 	chmod a+x debian/chinese-checkers-client/usr/share/chinese-checkers-client/chinese-checkers/bot/bot.py
 
-
-override_dh_auto_build:
-	echo "a"
-

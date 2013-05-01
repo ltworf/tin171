@@ -1,0 +1,17 @@
+#!/bin/sh
+if [ $USER != "salvo" ]
+then
+	echo "this script is just a convenience thing to split the debian directory and create the tarfile, you should not be using it"
+	exit 1
+fi
+
+cp -R ~/dev/tin171/ /amem/
+cd /amem/tin171
+rm -rf .git* debian
+cd ..
+tar -cjvvf chinese-checkers_0.1.orig.tar.bz2 tin171
+rm -rf tin171*
+tar -xvvf chinese-checkers_0.1.orig.tar.bz2
+cd tin171
+cp -R ~/dev/tin171/debian .
+

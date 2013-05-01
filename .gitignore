@@ -11,3 +11,6 @@ server/ebin/
 *~
 *.pdf
 gui_client/gui.py
+debian/substvars
+debian/files
+build/*

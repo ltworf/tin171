@@ -12,4 +12,13 @@ install_gui:
 	chmod a+x $(DESTDIR)/usr/share/chinese-checkers-client/chinese-checkers/bot/bot.py
 
 install_server:
-	echo "TODO"
+	mkdir -p $(DESTDIR)/usr/share/chinese-checkers-server
+	mkdir -p $(DESTDIR)/usr/games/
+	cp server/ebin/* $(DESTDIR)/usr/share/chinese-checkers-server
+	printf \#! >> $(DESTDIR)/usr/games/chinese-checkers-server
+	echo /bin/sh >> $(DESTDIR)/usr/games/chinese-checkers-server
+	echo INSTDIR=$(DESTDIR)/usr/share/chinese-checkers-server/ >> $(DESTDIR)/usr/games/chinese-checkers-server
+	cat server/src/start >> $(DESTDIR)/usr/games/chinese-checkers-server
+	chmod a+x $(DESTDIR)/usr/games/chinese-checkers-server
+
+install: install_gui install_server

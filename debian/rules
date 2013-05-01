@@ -8,9 +8,4 @@ override_dh_auto_build:
 
 override_dh_auto_install:
 	make DESTDIR=debian/chinese-checkers-client install_gui
-	make DESTDIR=debian/chinese-checkers-client install_server
-	
-	python setup.py install --root=debian/chinese-checkers-client --install-layout=deb --install-lib=/usr/share/chinese-checkers-client --install-scripts=/usr/games
-	chmod a+x debian/chinese-checkers-client/usr/share/chinese-checkers-client/chinese-checkers/chinese-checkers-gui.py
-	chmod a+x debian/chinese-checkers-client/usr/share/chinese-checkers-client/chinese-checkers/bot/bot.py
-
+	make DESTDIR=debian/chinese-checkers-server install_server

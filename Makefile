@@ -22,3 +22,8 @@ install_server:
 	chmod a+x $(DESTDIR)/usr/games/chinese-checkers-server
 
 install: install_gui install_server
+
+clean:
+	rm -rf server/ebin
+	rm -rf chinese-checkers/gui.py
+	rm -rf build

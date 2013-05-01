@@ -10,6 +10,9 @@ install_gui:
 	python setup.py install --root=$(DESTDIR) --install-layout=deb --install-lib=/usr/share/games/chinese-checkers-client --install-scripts=/usr/games
 	chmod a+x $(DESTDIR)/usr/share/games/chinese-checkers-client/chinese-checkers/chinese-checkers-gui.py
 	chmod a+x $(DESTDIR)/usr/share/games/chinese-checkers-client/chinese-checkers/bot/bot.py
+	mkdir -p $(DESTDIR)/usr/games/
+	ln -s ../share/games/chinese-checkers-client/chinese-checkers/chinese-checkers-gui.py $(DESTDIR)/usr/games/chinese-checkers-gui
+	ln -s ../share/games/chinese-checkers-client/chinese-checkers/bot/bot.py $(DESTDIR)/usr/games/chinese-checkers-bot
 
 install_server:
 	mkdir -p $(DESTDIR)/usr/share/games/chinese-checkers-server

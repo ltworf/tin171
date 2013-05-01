@@ -21,6 +21,8 @@
 import sys
 import os
 import subprocess
+import socket
+from time import sleep
 
 try:
     import notify2
@@ -55,7 +57,10 @@ class StateEnum:
 
 def terminate_children(l):
     for i in l:
-        i.terminate()
+        if i is None:
+            continue
+        if i.returncode is None:
+            i.terminate()
         i.wait()
         
 
@@ -78,7 +83,8 @@ class GameUI(QtGui.QMainWindow):
         self.my_turn = False
         self.steps=[]
 
-        self.child = []
+        self.child = [] # List of processes of the bots
+        self.server_proc = None #Process of the server
 
         self.load_settings()
         
@@ -118,12 +124,48 @@ class GameUI(QtGui.QMainWindow):
         self.settings.setValue('notify',self.ui.chkNotify.isChecked())
     def closeEvent(self,event):
         terminate_children(self.child)
+        terminate_children([self.server_proc])
+        self.server_proc = None
         sys.exit(0)
+    def create_server(self):
         
-    def connect_server(self):
+        args = ['chinese-checkers-server',
+                str(self.ui.spinPort.value()),
+               ]
+        try:
+            self.server_proc = subprocess.Popen(args)
+        except OSError:
+            QtGui.QMessageBox.warning(self,'Chinese Checkers','Unable to run server')
+            self.ui.cmdServer.setEnabled(False)
+            return
+        
+        #Test if it is ready
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        for i in xrange(30):
+            try:
+                s.connect(('localhost',self.ui.spinPort.value()))
+                s.close()
+                self.connect_server('localhost')
+                return
+            except Exception as E:
+                print E
+                sleep(0.1)
+                print "failed attempt"
+                pass
+        
+        terminate_children([self.server_proc])
+        self.server_proc = None
+        
+    def connect_server(self,hostname=None):
         '''slot connected to the event of button pressed'''
         
-        hostname = self.ui.txtHostname.text()
+        if hostname is None:
+            hostname = self.ui.txtHostname.text()
+            self.resume_hostname = None
+        else:
+            self.resume_hostname = self.ui.txtHostname.text()
+            self.ui.txtHostname.setText(hostname)
+            
         port = self.ui.spinPort.value()
 
         self.store_settings()
@@ -268,7 +310,8 @@ class GameUI(QtGui.QMainWindow):
             
             self.board = protocol.get_gui_board(msg[2])
             self.svg.setBoard(self.board)
-            self.socket_disconnected()
+            self.socket_disconnected(keep_server=True)
+            
             
     def get_games(self):
         self.write(protocol.list_games())
@@ -288,11 +331,18 @@ class GameUI(QtGui.QMainWindow):
         self.ui.cmdServer.setEnabled(False)
         self.ui.cmdDisconnect.setEnabled(True)
         pass
-    
-    def socket_disconnected(self):
+        
+    def socket_disconnected(self,keep_server=False):
+        if hasattr(self,'_disconnecting'):
+            return
+        print "====================================",keep_server,self.server_proc
         self.ui.boardFrame.setTitle(QtGui.QApplication.translate("Form", "Board"))
         self.state = StateEnum.DISCONNECTED
+
+        setattr(self,'_disconnecting',True)
         self.socket.close()
+        delattr(self,'_disconnecting')
+        
         self.ui.txtHostname.setEnabled(True)
         self.ui.spinPort.setEnabled(True)
         self.ui.cmdConnect.setEnabled(True)
@@ -306,9 +356,20 @@ class GameUI(QtGui.QMainWindow):
         self.ui.cmdDisconnect.setEnabled(False)
         
         palette=self.ui.lstGames.palette()
-        #palette.setColor(9,None)
         self.ui.lstPlayers.setPalette(palette)
         terminate_children(self.child)
+        
+        if self.server_proc is not None:
+            if keep_server:
+                self.connect_server('localhost')
+            else:
+                terminate_children([self.server_proc])
+                self.server_proc = None
+
+        
+        if self.resume_hostname is not None:
+            self.ui.txtHostname.setText(self.resume_hostname)
+            self.resume_hostname = None
         
     def board_click(self,i):
         print i

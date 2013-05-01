@@ -486,6 +486,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>cmdServer</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>create_server()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>330</x>
+     <y>60</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>347</x>
+     <y>23</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>connect()</slot>
@@ -498,5 +514,6 @@
   <slot>connect_server()</slot>
   <slot>add_bot()</slot>
   <slot>store_settings()</slot>
+  <slot>create_server()</slot>
  </slots>
 </ui>

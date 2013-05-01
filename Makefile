@@ -1,6 +1,6 @@
-all: server gui
+all: ccserver gui
 
-server:
+ccserver:
 	cd server; rebar compile
 
 gui:

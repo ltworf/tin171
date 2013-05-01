@@ -9,9 +9,9 @@ cp -R ~/dev/tin171/ /amem/
 cd /amem/tin171
 rm -rf .git* debian
 cd ..
-tar -cjvvf chinese-checkers_0.1.orig.tar.bz2 tin171
+tar -cjvvf chinese-checkers_0.2.orig.tar.bz2 tin171
 rm -rf tin171*
-tar -xvvf chinese-checkers_0.1.orig.tar.bz2
+tar -xvvf chinese-checkers_0.2.orig.tar.bz2
 cd tin171
 cp -R ~/dev/tin171/debian .
 

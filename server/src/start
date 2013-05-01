@@ -8,4 +8,4 @@ else
 	cd /usr/share/chinese-checkers-server
 fi
 
-erl -pa ebin -eval "application:start(cc)." -noshell
+exec erl -pa ebin -eval "application:start(cc)." -noshell

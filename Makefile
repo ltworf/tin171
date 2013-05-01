@@ -26,3 +26,7 @@ install_server:
 
 install: install_gui install_server
 
+clean:
+	rm -rf build
+	rm -rf server/ebin
+	rm -rf chinese-checkers/gui.py

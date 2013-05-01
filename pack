@@ -8,6 +8,7 @@ fi
 cp -R ~/dev/tin171/ /amem/
 cd /amem/tin171
 rm -rf .git* debian
+make clean
 cd ..
 tar -cjvvf chinese-checkers_0.2.orig.tar.bz2 tin171
 rm -rf tin171*

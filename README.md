@@ -5,6 +5,19 @@ The original project started for a university course about Artificial
 Intelligence. In this forked repository the aim is to make it usable by a more
 general public.
 
+Requirements
+============
+For the server:
+- rebar
+- erlang-base (or whatever package providing /usr/bin/erl)
+
+For the client:
+- Python 2.7 (perhaps it works with 2.6 but it's not tested).
+- python-yappy
+- python-qt4
+- pyqt4-dev-tools (to compile the .py from .ui, it's not a runtime need)
+- python-notify2 (not strictly necessary but it adds a nice feature)
+
 Install
 =======
 The preferred way of installing it is to run
@@ -13,8 +26,15 @@ dpkg-buildpackage
 ```
 and then install the .deb files, since the debian/ directory is provided.
 
-alternatively, use the setup.py and the Makefile to do a manual install,
-and check the content of debian/rules to see the various steps to perform.
+alternatively, run
+```
+make
+make install
+```
+make install supports DESTDIR, 
+```
+make DESTDIR=/tmp/test/ install
+```
 
 Usage
 =====

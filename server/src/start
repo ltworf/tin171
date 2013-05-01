@@ -5,7 +5,7 @@ if test -e $INSTDIR
 then
 	cd $INSTDIR
 else
-	cd /usr/share/chinese-checkers-server
+	cd /usr/share/games/chinese-checkers-server
 fi
 
 

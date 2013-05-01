@@ -1,0 +1,11 @@
+#!/bin/sh
+#$INSTDIR must be set
+
+if test -e $INSTDIR
+then
+	cd $INSTDIR
+else
+	cd /usr/share/chinese-checkers-server
+fi
+
+erl -pa ebin -eval "application:start(cc)." -noshell

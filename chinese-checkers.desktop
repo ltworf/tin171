@@ -9,3 +9,4 @@ Icon=chinese_board.svg
 Terminal=0
 Type=Application
 Categories=Qt;Game;BoardGame;
+Keywords=Board;Game;Multiplayer;Singleplayer

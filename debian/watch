@@ -1,0 +1,2 @@
+version=3
+https://github.com/ltworf/tin171/tags .*/v?(\d[\d\.]+)\.tar\.gz

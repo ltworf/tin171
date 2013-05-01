@@ -8,4 +8,12 @@ else
 	cd /usr/share/chinese-checkers-server
 fi
 
-exec erl -pa ebin -eval "application:start(cc)." -noshell
+
+if test -z $1
+then
+	PORT=8000
+else
+	PORT=$1
+fi
+
+exec erl -cc port $PORT -pa ebin -eval "application:start(cc)." -noshell

@@ -158,6 +158,7 @@ class GameUI(QtGui.QMainWindow):
         
     def connect_server(self,hostname=None):
         '''slot connected to the event of button pressed'''
+        self.ui.lstPlayers.clear()
         
         if hostname is None:
             hostname = self.ui.txtHostname.text()
@@ -255,9 +256,16 @@ class GameUI(QtGui.QMainWindow):
                 
             pass
         elif msg[0] in ("player_joined","player_left"):
+            prev_count = self.ui.lstPlayers.count()
             self.ui.lstPlayers.clear()
             for i in msg[1]:
                 self.ui.lstPlayers.addItem(str(i))
+            
+            if prev_count < len(msg[1]):
+                self.notify("Player joined")
+            else:
+                self.notify("Player left")
+                
         elif msg[0] == 'game_start':
             self.player_id = msg[1]
             
@@ -303,10 +311,13 @@ class GameUI(QtGui.QMainWindow):
         elif msg[0] == 'won':
             if self.state ==StateEnum.SPECTATING:
                 self.ui.boardFrame.setTitle(QtGui.QApplication.translate("Form", "Someone won"))
+                self.notify("Someone won")
             elif msg[1][0] == self.player_id:
                 self.ui.boardFrame.setTitle(QtGui.QApplication.translate("Form", "You won!"))
+                self.notify("You won!")
             else:
                 self.ui.boardFrame.setTitle(QtGui.QApplication.translate("Form", "GAME OVER"))
+                self.notify("GAME OVER!")
             
             self.board = protocol.get_gui_board(msg[2])
             self.svg.setBoard(self.board)

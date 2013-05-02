@@ -45,6 +45,9 @@
              </item>
              <item>
               <widget class="QLineEdit" name="txtHostname">
+               <property name="toolTip">
+                <string>Server's IP address or hostname</string>
+               </property>
                <property name="text">
                 <string>localhost</string>
                </property>
@@ -66,6 +69,9 @@
              </item>
              <item>
               <widget class="QSpinBox" name="spinPort">
+               <property name="toolTip">
+                <string>Server's port</string>
+               </property>
                <property name="minimum">
                 <number>1</number>
                </property>
@@ -81,6 +87,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="cmdConnect">
+             <property name="toolTip">
+              <string>Connects to server</string>
+             </property>
              <property name="text">
               <string>Connect</string>
              </property>
@@ -88,6 +97,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="cmdServer">
+             <property name="toolTip">
+              <string>Creates a server on the specified port, listening to all network interfaces</string>
+             </property>
              <property name="text">
               <string>Server</string>
              </property>
@@ -118,6 +130,9 @@
               </item>
               <item>
                <widget class="QPushButton" name="refreshGames">
+                <property name="toolTip">
+                 <string>Refresh list of matches</string>
+                </property>
                 <property name="text">
                  <string>↺</string>
                 </property>
@@ -147,7 +162,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="text">
-                   <string>Host</string>
+                   <string>Create match</string>
                   </property>
                  </widget>
                 </item>
@@ -155,6 +170,9 @@
                  <widget class="QPushButton" name="cmdStart">
                   <property name="enabled">
                    <bool>false</bool>
+                  </property>
+                  <property name="toolTip">
+                   <string>Start the match</string>
                   </property>
                   <property name="text">
                    <string>Start</string>
@@ -166,8 +184,11 @@
                   <property name="enabled">
                    <bool>false</bool>
                   </property>
+                  <property name="toolTip">
+                   <string/>
+                  </property>
                   <property name="text">
-                   <string>Join</string>
+                   <string>Join match</string>
                   </property>
                  </widget>
                 </item>
@@ -185,6 +206,9 @@
                  <widget class="QPushButton" name="cmdAddBot">
                   <property name="enabled">
                    <bool>false</bool>
+                  </property>
+                  <property name="toolTip">
+                   <string>Adds an AI player to the current match</string>
                   </property>
                   <property name="text">
                    <string>Add bot</string>
@@ -219,6 +243,9 @@
                 </property>
                 <item>
                  <widget class="QCheckBox" name="chkNotify">
+                  <property name="toolTip">
+                   <string>Will use desktop notifications to notify the user of the events</string>
+                  </property>
                   <property name="text">
                    <string>Enable notifications</string>
                   </property>
@@ -272,7 +299,7 @@
      <x>0</x>
      <y>0</y>
      <width>607</width>
-     <height>20</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

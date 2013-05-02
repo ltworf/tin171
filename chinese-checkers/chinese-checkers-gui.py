@@ -75,6 +75,11 @@ class GameUI(QtGui.QMainWindow):
         self.svg = BoardWidget()
         QtCore.QObject.connect(self.svg,QtCore.SIGNAL("clicked(int)"),self.board_click)
         self.ui.boardLayout.addWidget(self.svg)
+        try:
+            icon = QtGui.QIcon('/usr/share/icons/chinese_board.svg')
+            self.setWindowIcon(icon)
+        except:
+            pass
         
         self.state = StateEnum.DISCONNECTED
         self.parser = parser.Parser()

@@ -1,5 +1,9 @@
 CHANGELOG
 
+0.3
+- More notifications
+- A bit more explicative UI
+
 0.2
 - Fix makefile to build the server
 

@@ -1,11 +1,6 @@
-chinese-checkers (0.2-1) UNRELEASED; urgency=low
-
-  * bugfix release
-
- -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Wed, 01 May 2013 17:46:18 +0200
-
-chinese-checkers (0.1-1) UNSTABLE; urgency=low
+chinese-checkers (0.3-1) UNSTABLE; urgency=low
 
   * Initial release. (Closes: #705212)
 
- -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Thu, 11 Apr 2013 19:46:00 +0200
+
+ -- Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>  Wed, 02 May 2013 12:46:18 +0200

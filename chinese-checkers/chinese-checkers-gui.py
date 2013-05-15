@@ -207,7 +207,7 @@ class GameUI(QtGui.QMainWindow):
                 
                 self.ui.cmdJoin.setEnabled(True)
                 self.ui.cmdSpectate.setEnabled(True)
-                self.ui.cmdStart.setEnabled(True)
+                self.ui.cmdStart.setEnabled(False)
                 self.ui.cmdHost.setEnabled(True)
             elif self.state in (StateEnum.HOST_OK_WAIT,StateEnum.JOIN_OK_WAIT):
                 self.ui.cmdJoin.setEnabled(False)
@@ -216,6 +216,7 @@ class GameUI(QtGui.QMainWindow):
                 if self.state == StateEnum.JOIN_OK_WAIT:
                     self.ui.cmdStart.setEnabled(False)
                 else:
+                    self.ui.cmdStart.setEnabled(True)
                     self.ui.cmdAddBot.setEnabled(True)
                 self.state = StateEnum.WAITING_PLAYERS
             elif self.state == StateEnum.START_WAIT:

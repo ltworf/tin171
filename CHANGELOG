@@ -2,6 +2,10 @@ CHANGELOG
 
 0.4
 - Better enabling/disabling buttons
+- Can add multiple bots at the same time
+- Fixes very odd bug that caused bots to crash when they were emitting too much 
+  output (by redirecting their output to /dev/null if they are started within
+  the GUI).
 
 0.3
 - More notifications

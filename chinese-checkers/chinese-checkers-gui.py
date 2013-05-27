@@ -454,28 +454,37 @@ class GameUI(QtGui.QMainWindow):
         if not okay:
             return
         try:
-            index = int(index)
+            if ',' in index:
+                index = (int(i) for i in index.split(','))
+            else:
+                index = (int(index),)
         except:
             return
-        if index >= len(personalities) or index < 0:
-            return
-
+        
+        
         hostname = str(self.ui.txtHostname.text())
         port = self.ui.spinPort.value()
-        print hostname, port
-
-
         
-        args = ['chinese-checkers-bot',
-                '-s', hostname,
-                '-p', str(port),
-                '-g', self.gamename,
-                '-b', str(index),
-                ]
-        try:
-            self.child.append(subprocess.Popen(args))
-        except OSError:
-            QtGui.QMessageBox.warning(self,'Chinese Checkers','Unable to run AI')
+        for i in index:
+            if i >= len(personalities) or i < 0:
+                return
+        
+            args = ['chinese-checkers-bot',
+                    '-s', hostname,
+                    '-p', str(port),
+                    '-g', self.gamename,
+                    '-b', str(i),
+                    ]
+            print args
+            try:
+                devnull = open(os.devnull, 'w')
+                
+                self.child.append(subprocess.Popen(args,stdout=devnull))
+                
+                devnull.close()
+                
+            except OSError:
+                QtGui.QMessageBox.warning(self,'Chinese Checkers','Unable to run AI')
         
     def pretty_players(self,l):
         '''Fills the list of players, colorizing it

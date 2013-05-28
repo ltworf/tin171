@@ -286,7 +286,7 @@ class GameUI(QtGui.QMainWindow):
         elif msg[0] == 'your_turn':
             #TODO timeout msg[1]
             self.steps=list()
-            self.ui.boardFrame.setTitle(QtGui.QApplication.translate("Form", "Make your move"))
+            self.ui.boardFrame.setTitle("Make your move")
             self.my_turn=True
             self.board = protocol.get_gui_board(msg[2])
             self.svg.setBoard(self.board)
@@ -300,7 +300,7 @@ class GameUI(QtGui.QMainWindow):
                 self.state=-1
                 
                 self.steps=[]
-                self.ui.boardFrame.setTitle(QtGui.QApplication.translate("Form", "Board"))
+                self.ui.boardFrame.setTitle("Board")
             
             self.board = protocol.get_gui_board(msg[3])
             self.svg.setBoard(self.board)
@@ -316,13 +316,13 @@ class GameUI(QtGui.QMainWindow):
             self.pretty_players(msg[1])
         elif msg[0] == 'won':
             if self.state ==StateEnum.SPECTATING:
-                self.ui.boardFrame.setTitle(QtGui.QApplication.translate("Form", "Someone won"))
+                self.ui.boardFrame.setTitle("Someone won")
                 self.notify("Someone won")
             elif msg[1][0] == self.player_id:
-                self.ui.boardFrame.setTitle(QtGui.QApplication.translate("Form", "You won!"))
+                self.ui.boardFrame.setTitle("You won!")
                 self.notify("You won!")
             else:
-                self.ui.boardFrame.setTitle(QtGui.QApplication.translate("Form", "GAME OVER"))
+                self.ui.boardFrame.setTitle("GAME OVER")
                 self.notify("GAME OVER!")
             
             self.board = protocol.get_gui_board(msg[2])
@@ -353,7 +353,7 @@ class GameUI(QtGui.QMainWindow):
         if hasattr(self,'_disconnecting'):
             return
         print "====================================",keep_server,self.server_proc
-        self.ui.boardFrame.setTitle(QtGui.QApplication.translate("Form", "Board"))
+        self.ui.boardFrame.setTitle("Board")
         self.state = StateEnum.DISCONNECTED
 
         setattr(self,'_disconnecting',True)
@@ -422,9 +422,7 @@ class GameUI(QtGui.QMainWindow):
         self.write(message)
         self.state = StateEnum.JOIN_OK_WAIT
     def host(self):
-        gname = QtGui.QInputDialog.getText(self,
-                    QtGui.QApplication.translate("Form", "Host game"),
-                    QtGui.QApplication.translate("Form", "Insert the name for the new game"),
+        gname = QtGui.QInputDialog.getText(self,"Host game","Insert the name for the new game",
                     QtGui.QLineEdit.Normal,"")
         if not gname[1]:
             return
@@ -434,6 +432,11 @@ class GameUI(QtGui.QMainWindow):
         self.state = StateEnum.HOST_OK_WAIT
         self.get_games()
     def start(self):
+        
+        if self.ui.lstPlayers.count() not in (2,3,4,6):
+            QtGui.QMessageBox.warning(self,'Chinese Checkers','Wrong number of players')
+            return
+        
         self.state = StateEnum.START_WAIT
         message = protocol.start_game()
         self.write(message)
@@ -450,7 +453,7 @@ class GameUI(QtGui.QMainWindow):
         for i in personalities:
             bots+='%d - %s\n' % (i[0],i[1])
         
-        (index,okay)=QInputDialog.getText(self,"Select bot","Insert the index of the desired AI:\n"+bots,QtGui.QLineEdit.Normal,"0")
+        (index,okay)=QInputDialog.getText(self,"Select bot","Insert the index of the desired AI:\nSeparate numbers with commas to add more\n"+bots,QtGui.QLineEdit.Normal,"0")
         if not okay:
             return
         try:

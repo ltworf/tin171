@@ -14,10 +14,6 @@
 
 -behaviour(gen_server).
 
--import(erl_scan).
--import(erl_parse).
--import(io_lib).
-
 %% API
 -export([start_link/1]).
 

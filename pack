@@ -10,9 +10,9 @@ cd /amem/tin171
 rm -rf .git* debian
 make clean
 cd ..
-tar -cjvvf chinese-checkers_0.3.orig.tar.bz2 tin171
+tar -cjvvf chinese-checkers_0.4.orig.tar.bz2 tin171
 rm -rf tin171*
-tar -xvvf chinese-checkers_0.3.orig.tar.bz2
+tar -xvvf chinese-checkers_0.4.orig.tar.bz2
 cd tin171
 cp -R ~/dev/tin171/debian .
 

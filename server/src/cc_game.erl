@@ -13,8 +13,6 @@
 
 -behaviour(gen_fsm).
 -compile(export_all).
--import(lib_cc).
--import(cc_lobby).
 
 -include("include/cc.hrl").
 

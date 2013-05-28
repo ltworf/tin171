@@ -6,6 +6,7 @@ CHANGELOG
 - Fixes very odd bug that caused bots to crash when they were emitting too much 
   output (by redirecting their output to /dev/null if they are started within
   the GUI).
+- Removed imports from erlang code. New erlang version doesn't like them.
 
 0.3
 - More notifications

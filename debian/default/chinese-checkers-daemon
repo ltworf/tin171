@@ -1,0 +1,8 @@
+# This configuration file gets included by the init script
+# so it needs to be in a valid shell script format.
+
+# The port the server will use
+PORT=8000
+
+# A user different than root should be specified here
+SERVER_USER=games

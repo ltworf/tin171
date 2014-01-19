@@ -1,5 +1,8 @@
 CHANGELOG
 
+0.5
+- LSB daemon for the server and conffile
+
 0.4
 - Better enabling/disabling buttons
 - Can add multiple bots at the same time

@@ -30,3 +30,4 @@ clean:
 	rm -rf build
 	rm -rf server/ebin
 	rm -rf chinese-checkers/gui.py
+	rm -rf `find . -name "*.pyc"`

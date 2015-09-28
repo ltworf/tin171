@@ -1,25 +1,25 @@
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2012  Salvo "LtWorf" Tomaselli
-# 
+#
 # This is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # SVG for the board comes from wikipedia, their CC license applies
-# 
+#
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
-from PyQt4 import QtSvg,QtCore,QtGui
+from PyQt5 import QtSvg,QtCore,QtGui,QtWidgets
 
 from math import sqrt
 
@@ -32,25 +32,25 @@ _board = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n<svg\n        
 def gen_board(board):
     '''Generates the svg XML to represent the given board.
     board has to be an iterable of at least 288 positions'''
-    
+
     groups={}
     for i in xrange(8):
         groups[i]=""
-    
+
     for i in xrange(288):
         if i in _positions:
             ball= '<use xlink:href="#%s" transform="translate%s" />' % (_colors[board[i]],str(_positions[i]))
             groups[board[i]]+=ball
-    
+
     result=_board
     for i in groups:
         result=result.replace("%%%%%d%%%%" % i, groups[i])
-    
+
     return result
 
 
 class BoardWidget(QtSvg.QSvgWidget):
-    
+
     '''This widgets shows a chinese checkers board.
     The board is shown after the setBoard method has been called'''
 
@@ -58,10 +58,10 @@ class BoardWidget(QtSvg.QSvgWidget):
 
     def __init__(self):
         super(BoardWidget, self).__init__()
-        svgPolicy = QtGui.QSizePolicy()
+        svgPolicy = QtWidgets.QSizePolicy()
         svgPolicy.setHeightForWidth(True)
         self.setSizePolicy(svgPolicy)
-        
+
         self.board=[]
         for i in xrange(288): self.board.append(0)
         self.setBoard(self.board)
@@ -69,7 +69,7 @@ class BoardWidget(QtSvg.QSvgWidget):
         return QtCore.QSize(550,550)
     def getColor(self,n,negated=False):
         '''Returns the QColor for the player'''
-        
+
         if n==1: #red
             c=QtGui.QColor(255,0,0)
         elif n==2: #orange
@@ -84,47 +84,47 @@ class BoardWidget(QtSvg.QSvgWidget):
             c=QtGui.QColor('purple')
         else:
             c=QtGui.QColor(0,0,0)
-        
+
         if negated:
             #inverting
             r=255 & ~c.red()
             g=255 & ~c.green()
             b=255 & ~c.blue()
             return QtGui.QColor(r,g,b)
-        
+
         return c
-        
+
     def setBoard(self,board):
         '''Given an iterable containing the board, shows it in the widget.'''
         self.board=board
         xml=QtCore.QByteArray(gen_board(board))
         return self.load(xml)
-        
+
     def heightForWidth(self,w):
         return w
-        
+
     def setMarble(self,pos,val):
         '''sets the value val to the position pos, and then redraws the board'''
         self.board[pos]=val
         self.setBoard(self.board)
-        
+
     def getValueAt(self,pos):
         '''returns the value contained at the given position in the board.'''
         return self.board[pos]
-        
+
     def getBoard(self):
         '''Returns the board'''
         return self.board
-        
+
     def mousePressEvent(self,ev):
         '''Internal method overriding mousePressEvent, used to emit the signal
         when a click is made on a marble'''
         dist= lambda c1,c2: sqrt(((c1[0]-c2[0])**2) + ((c1[1]-c2[1])**2))
-        
+
         size=self.size()
-        
+
         coord=((ev.x() * 600/ size.width()) + 200,(ev.y() * 600/ size.height()) + 200)
-        
+
         for i in _positions:
             #TODO also that 20, should be proportionate to the size
             if dist(coord,_positions[i]) < 20:

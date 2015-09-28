@@ -2,20 +2,20 @@
 # -*- coding: utf-8 -*-
 
 # Copyright (C) 2012  Salvo "LtWorf" Tomaselli
-# 
+#
 # This is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 # author Salvo "LtWorf" Tomaselli <tiposchi@tiscali.it>
 
 import sys
@@ -29,9 +29,10 @@ try:
 except:
     pass
 
-from PyQt4 import QtCore, QtGui
-from PyQt4 import QtNetwork
-from PyQt4.QtGui import QInputDialog
+from PyQt5 import QtCore, QtGui
+from PyQt5 import QtWidgets
+from PyQt5 import QtNetwork
+from PyQt5.QtWidgets import QInputDialog
 
 from BoardWidget import BoardWidget
 import gui
@@ -62,25 +63,25 @@ def terminate_children(l):
         if i.returncode is None:
             i.terminate()
         i.wait()
-        
 
-class GameUI(QtGui.QMainWindow):
-    
+
+class GameUI(QtWidgets.QMainWindow):
+
     def __init__(self):
-        QtGui.QMainWindow.__init__(self)
-        
+        QtWidgets.QMainWindow.__init__(self)
+
 
         self.ui = gui.Ui_MainWindow()
         self.ui.setupUi(self)
         self.svg = BoardWidget()
-        QtCore.QObject.connect(self.svg,QtCore.SIGNAL("clicked(int)"),self.board_click)
+        self.svg.clicked.connect(self.board_click)
         self.ui.boardLayout.addWidget(self.svg)
         try:
             icon = QtGui.QIcon('/usr/share/icons/chinese_board.svg')
             self.setWindowIcon(icon)
         except:
             pass
-        
+
         self.state = StateEnum.DISCONNECTED
         self.parser = parser.Parser()
         self.board = self.svg.getBoard()
@@ -92,20 +93,20 @@ class GameUI(QtGui.QMainWindow):
         self.server_proc = None #Process of the server
 
         self.load_settings()
-        
-        
+
+
         #connection to the server
         self.socket=QtNetwork.QTcpSocket()
-        QtCore.QObject.connect(self.socket,QtCore.SIGNAL("readyRead()"), self.socket_event)
-        QtCore.QObject.connect(self.socket,QtCore.SIGNAL("connected()"), self.socket_connected)
-        QtCore.QObject.connect(self.socket,QtCore.SIGNAL("disconnected()"), self.socket_disconnected)
-        
+        self.socket.readyRead.connect(self.socket_event)
+        self.socket.connected.connect(self.socket_connected)
+        self.socket.disconnected.connect(self.socket_disconnected)
+
         try:
             notify2.init('Chinese Checkers')
         except:
             self.ui.chkNotify.setChecked(False)
             self.ui.chkNotify.setEnabled(False)
-            
+
     def notify(self,message):
         self.activateWindow()
         if self.ui.chkNotify.isChecked():
@@ -116,13 +117,13 @@ class GameUI(QtGui.QMainWindow):
             n.set_timeout(500)
             n.show()
 
-        
+
     def load_settings(self):
 
         self.settings = QtCore.QSettings()
-        self.ui.txtHostname.setText(self.settings.value('hostname','localhost').toString())
-        self.ui.spinPort.setValue(self.settings.value('port',8000).toInt()[0])
-        self.ui.chkNotify.setChecked(self.settings.value('notify',True).toBool())
+        self.ui.txtHostname.setText(self.settings.value('hostname','localhost'))
+        self.ui.spinPort.setValue(int(self.settings.value('port',8000)))
+        self.ui.chkNotify.setChecked(bool(self.settings.value('notify',True)))
     def store_settings(self):
         self.settings.setValue('hostname',self.ui.txtHostname.text())
         self.settings.setValue('port',self.ui.spinPort.value())
@@ -133,54 +134,54 @@ class GameUI(QtGui.QMainWindow):
         self.server_proc = None
         sys.exit(0)
     def create_server(self):
-        
+
         args = ['chinese-checkers-server',
                 str(self.ui.spinPort.value()),
                ]
         try:
             self.server_proc = subprocess.Popen(args)
         except OSError:
-            QtGui.QMessageBox.warning(self,'Chinese Checkers','Unable to run server')
+            QtWidgets.QMessageBox.warning(self,'Chinese Checkers','Unable to run server')
             self.ui.cmdServer.setEnabled(False)
             return
-        
+
         #Test if it is ready
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        for i in xrange(30):
+        for i in range(30):
             try:
                 s.connect(('localhost',self.ui.spinPort.value()))
                 s.close()
                 self.connect_server('localhost')
                 return
             except Exception as E:
-                print E
+                print(E)
                 sleep(0.1)
-                print "failed attempt"
+                print("failed attempt")
                 pass
-        
+
         terminate_children([self.server_proc])
         self.server_proc = None
-        
+
     def connect_server(self,hostname=None):
         '''slot connected to the event of button pressed'''
         self.ui.lstPlayers.clear()
-        
+
         if hostname is None:
             hostname = self.ui.txtHostname.text()
             self.resume_hostname = None
         else:
             self.resume_hostname = self.ui.txtHostname.text()
             self.ui.txtHostname.setText(hostname)
-            
+
         port = self.ui.spinPort.value()
 
         self.store_settings()
-        
+
         if self.socket.state() != QtNetwork.QAbstractSocket.UnconnectedState:
             self.socket.close()
-        
+
         self.socket.connectToHost(hostname,port,QtNetwork.QAbstractSocket.ReadWrite)
-            
+
     def socket_event(self):
         '''Slot connected to the signal of the socket'''
         while self.socket.canReadLine():
@@ -189,22 +190,22 @@ class GameUI(QtGui.QMainWindow):
             while str(msg).strip().endswith(','):
                 msg += self.socket.readLine()
             self.new_data(msg)
-        
+
     def new_data(self,msg):
         '''elaborates the messages from the server'''
         msg=str(msg)
         msg=msg.strip()
-        
+
         #print "---->",msg
         msg=self.parser.input(msg)
         #print msg
-        
-        print msg,self.state
+
+        print(msg,self.state)
         if msg=="ok":
-            
+
             if self.state == StateEnum.WAITING_AUTH:
                 self.get_games()
-                
+
                 self.ui.cmdJoin.setEnabled(True)
                 self.ui.cmdSpectate.setEnabled(True)
                 self.ui.cmdStart.setEnabled(False)
@@ -224,7 +225,7 @@ class GameUI(QtGui.QMainWindow):
                 self.ui.cmdAddBot.setEnabled(False)
                 self.ui.tabWidget.setCurrentIndex(1)
                 self.state = StateEnum.GAME_STARTED
-                
+
             elif self.state == StateEnum.SPECTATE_WAIT:
                 self.state = StateEnum.SPECTATING
                 self.ui.cmdJoin.setEnabled(False)
@@ -232,7 +233,7 @@ class GameUI(QtGui.QMainWindow):
                 self.ui.cmdStart.setEnabled(False)
                 self.ui.cmdHost.setEnabled(False)
                 self.ui.tabWidget.setCurrentIndex(1)
-                
+
         elif msg[0]=='error':
             if self.state == StateEnum.MOVE_WAIT:
                 self.state = -1
@@ -243,42 +244,42 @@ class GameUI(QtGui.QMainWindow):
             elif self.state == StateEnum.SPECTATE_WAIT:
                 #TODO can't spectate, show some error
                 pass
-                
+
         elif msg[0]=="games":
             self.ui.lstGames.clear()
             for i in msg[1]:
                 self.ui.lstGames.addItem(str(i))
-                
+
             brush=QtGui.QBrush()
             brush.setStyle(1)
             brush.setColor(QtGui.QColor(255,0,0))
-            for i in msg[2]:    
+            for i in msg[2]:
                 item=QtGui.QListWidgetItem()
                 item.setForeground(brush)
-                
+
                 item.setText(str(i))
-                
+
                 self.ui.lstGames.addItem(item)
-                
+
             pass
         elif msg[0] in ("player_joined","player_left"):
             prev_count = self.ui.lstPlayers.count()
             self.ui.lstPlayers.clear()
             for i in msg[1]:
                 self.ui.lstPlayers.addItem(str(i))
-            
+
             if prev_count < len(msg[1]):
                 self.notify("Player joined")
             else:
                 self.notify("Player left")
-                
+
         elif msg[0] == 'game_start':
             self.player_id = msg[1]
-            
+
             palette=QtGui.QPalette()
             palette.setColor(9,self.svg.getColor(msg[1]))
             self.ui.lstPlayers.setPalette(palette)
-            
+
             self.pretty_players(msg[2])
             self.board = protocol.get_gui_board(msg[3])
             self.svg.setBoard(self.board)
@@ -293,18 +294,18 @@ class GameUI(QtGui.QMainWindow):
             self.prev_board=list(self.board)
 
             self.notify('Your turn')
-            
+
         elif msg[0] == 'update':
-            
+
             if self.state == StateEnum.MOVE_WAIT:
                 self.state=-1
-                
+
                 self.steps=[]
                 self.ui.boardFrame.setTitle("Board")
-            
+
             self.board = protocol.get_gui_board(msg[3])
             self.svg.setBoard(self.board)
-            
+
             #TODO Highlights the jumps
             #msg[2].pop()
             #for i in msg[2]:
@@ -324,58 +325,58 @@ class GameUI(QtGui.QMainWindow):
             else:
                 self.ui.boardFrame.setTitle("GAME OVER")
                 self.notify("GAME OVER!")
-            
+
             self.board = protocol.get_gui_board(msg[2])
             self.svg.setBoard(self.board)
             self.socket_disconnected(keep_server=True)
-            
-            
+
+
     def get_games(self):
         self.write(protocol.list_games())
-    
+
     def authenticate(self):
         '''sends authentication to the server'''
         self.write(protocol.login_message())
         self.state = StateEnum.WAITING_AUTH
-    
+
     def socket_connected(self):
-        
+
         self.authenticate()
-        
+
         self.ui.txtHostname.setEnabled(False)
         self.ui.spinPort.setEnabled(False)
         self.ui.cmdConnect.setEnabled(False)
         self.ui.cmdServer.setEnabled(False)
         self.ui.cmdDisconnect.setEnabled(True)
         pass
-        
+
     def socket_disconnected(self,keep_server=False):
         if hasattr(self,'_disconnecting'):
             return
-        print "====================================",keep_server,self.server_proc
+        print("====================================",keep_server,self.server_proc)
         self.ui.boardFrame.setTitle("Board")
         self.state = StateEnum.DISCONNECTED
 
         setattr(self,'_disconnecting',True)
         self.socket.close()
         delattr(self,'_disconnecting')
-        
+
         self.ui.txtHostname.setEnabled(True)
         self.ui.spinPort.setEnabled(True)
         self.ui.cmdConnect.setEnabled(True)
         self.ui.cmdServer.setEnabled(True)
-        
+
         self.ui.cmdJoin.setEnabled(False)
         self.ui.cmdSpectate.setEnabled(False)
         self.ui.cmdStart.setEnabled(False)
         self.ui.cmdHost.setEnabled(False)
-        
+
         self.ui.cmdDisconnect.setEnabled(False)
-        
+
         palette=self.ui.lstGames.palette()
         self.ui.lstPlayers.setPalette(palette)
         terminate_children(self.child)
-        
+
         if self.server_proc is not None:
             if keep_server:
                 self.connect_server('localhost')
@@ -383,21 +384,21 @@ class GameUI(QtGui.QMainWindow):
                 terminate_children([self.server_proc])
                 self.server_proc = None
 
-        
+
         if self.resume_hostname is not None:
             self.ui.txtHostname.setText(self.resume_hostname)
             self.resume_hostname = None
-        
+
     def board_click(self,i):
-        print i
+        print(i)
         if self.my_turn == False or self.board[i] not in (self.player_id,0,7):
             return
-        
-        
-        
+
+
+
         if len(self.steps)==0 and self.board[i]==0:
             return
-        
+
         if len(self.steps)>1 and self.steps[-1]==i:
             #Move made
             message=protocol.move(self.steps)
@@ -405,11 +406,11 @@ class GameUI(QtGui.QMainWindow):
             self.state = StateEnum.MOVE_WAIT
             self.my_turn = False
             return
-        
+
         self.steps.append(i)
         self.svg.setMarble(i,7)
-        
-        
+
+
     def spectate(self):
         self.state = StateEnum.SPECTATE_WAIT
         message=protocol.spectate_game(self.ui.lstGames.currentItem().text())
@@ -417,13 +418,12 @@ class GameUI(QtGui.QMainWindow):
     def join(self):
         item = self.ui.lstGames.currentItem()
         if item == None: return
-        
+
         message=protocol.join_game(item.text())
         self.write(message)
         self.state = StateEnum.JOIN_OK_WAIT
     def host(self):
-        gname = QtGui.QInputDialog.getText(self,"Host game","Insert the name for the new game",
-                    QtGui.QLineEdit.Normal,"")
+        gname = QInputDialog.getText(self,"Host game","Insert the name for the new game")
         if not gname[1]:
             return
         message = protocol.host_game_message(str(gname[0]))
@@ -432,28 +432,28 @@ class GameUI(QtGui.QMainWindow):
         self.state = StateEnum.HOST_OK_WAIT
         self.get_games()
     def start(self):
-        
+
         if self.ui.lstPlayers.count() not in (2,3,4,6):
-            QtGui.QMessageBox.warning(self,'Chinese Checkers','Wrong number of players')
+            QtWidgets.QMessageBox.warning(self,'Chinese Checkers','Wrong number of players')
             return
-        
+
         self.state = StateEnum.START_WAIT
         message = protocol.start_game()
         self.write(message)
-    
-    
+
+
     def write(self,message):
-        print "---> %s" % message
+        print("---> %s" % message)
         #TODO return to initial state if connection fails
         self.socket.write(message)
     def add_bot(self):
-        
+
         bots = ''
         personalities = bot.get_personalities()
         for i in personalities:
             bots+='%d - %s\n' % (i[0],i[1])
-        
-        (index,okay)=QInputDialog.getText(self,"Select bot","Insert the index of the desired AI:\nSeparate numbers with commas to add more\n"+bots,QtGui.QLineEdit.Normal,"0")
+
+        (index,okay)=QInputDialog.getText(self,"Select bot","Insert the index of the desired AI:\nSeparate numbers with commas to add more\n"+bots)
         if not okay:
             return
         try:
@@ -463,69 +463,69 @@ class GameUI(QtGui.QMainWindow):
                 index = (int(index),)
         except:
             return
-        
-        
+
+
         hostname = str(self.ui.txtHostname.text())
         port = self.ui.spinPort.value()
-        
+
         for i in index:
             if i >= len(personalities) or i < 0:
                 return
-        
+
             args = ['chinese-checkers-bot',
                     '-s', hostname,
                     '-p', str(port),
                     '-g', self.gamename,
                     '-b', str(i),
                     ]
-            print args
+            print(args)
             try:
                 devnull = open(os.devnull, 'w')
-                
+
                 self.child.append(subprocess.Popen(args,stdout=devnull))
-                
+
                 devnull.close()
-                
+
             except OSError:
-                QtGui.QMessageBox.warning(self,'Chinese Checkers','Unable to run AI')
-        
+                QtWidgets.QMessageBox.warning(self,'Chinese Checkers','Unable to run AI')
+
     def pretty_players(self,l):
         '''Fills the list of players, colorizing it
         l is a list of tuples in the form id,player_name
         '''
         self.ui.lstPlayers.clear()
         for i in l:#msg[2]:
-            
+
             item=QtGui.QListWidgetItem()
-                
+
             bcolor=self.svg.getColor(i[0])
             fcolor=self.svg.getColor(i[0],negated=True)
-            
+
             bbrush=QtGui.QBrush()
             fbrush=QtGui.QBrush()
-                
+
             bbrush.setColor(bcolor)
             fbrush.setColor(fcolor)
-                
+
             bbrush.setStyle(1)
             fbrush.setStyle(1)
-                
+
             item.setBackground(bbrush)
             item.setForeground(fbrush)
-                
+
             item.setText(str(i[1]))
-                
+
             self.ui.lstPlayers.addItem(item)
 
 if __name__ == "__main__":
     #makes yappy happy, going to a writable directory
     os.chdir(os.getenv('TMPDIR','/tmp'))
 
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
 
     app.setOrganizationName('None');
     app.setApplicationName('chinese-checkers-gui');
-    
+
     MainWindow = GameUI()
     MainWindow.show()
     sys.exit(app.exec_())

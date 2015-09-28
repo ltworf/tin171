@@ -4,11 +4,11 @@ Priority: optional
 Maintainer: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>
 Standards-Version: 3.9.5
 Homepage: https://github.com/ltworf/tin171
-Build-Depends: debhelper (>= 7.0.50~), python, python-support, pyqt4-dev-tools, python-yappy, rebar (>= 2.0.0)
+Build-Depends: debhelper (>= 7.0.50~), python, python-support, pyqt5-dev-tools, python-yappy, rebar (>= 2.0.0)
 
 Package: chinese-checkers-client
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-qt4, python-yappy
+Depends: ${misc:Depends}, ${python:Depends}, python-pyqt5, python-yappy, python-pyqt5.qtsvg
 Recommends: chinese-checkers-server, python-notify2
 Description: Multiplayer implementation of the chinese checkers. GUI package
  Chinese checkers is a multiplayer board game, that can be played by
